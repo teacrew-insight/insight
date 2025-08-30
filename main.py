@@ -18,20 +18,26 @@ import io
 import pathlib
 from typing import List, Dict, Optional
 
+import os
+
 # =======================(التعريف والمصادقة مع فير بيس)=====================
-cred = credentials.Certificate("C:\\Users\\Ewd20\\PycharmProjects\\insight\\serviceAccountKey.json")
+
+# اقرأ مسار ملف الخدمة من الانفايرومنت
+firebase_credentials_path = os.getenv("FIREBASE_CREDENTIALS_PATH")
+
+cred = credentials.Certificate(firebase_credentials_path)
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'insightdata-fed76.firebasestorage.app'
+    'storageBucket': os.getenv("FIREBASE_STORAGE_BUCKET")
 })
 db = firestore.client()
 bucket = storage.bucket()
 
 # =======================(التعريف والمصادقة مع ديب سيك)=====================
 api_url = "https://api.deepseek.com/v1/chat/completions"
-api_key = " "
+api_key = os.getenv("DEEPSEEK_API_KEY")
 
 # =======================(Google Gemini Authentication)=====================
-GEMINI_API_KEY = " "
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 # =======================(تحميل نموذج الـ Embeddings)=====================
